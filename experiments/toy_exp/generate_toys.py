@@ -61,7 +61,6 @@ def generate_experiment(exp_name, n_train_images, n_test_images, mode, class_dia
 
     train_dir = os.path.join(cf.root_dir, exp_name, 'train')
     test_dir = os.path.join(cf.root_dir, exp_name, 'test')
-
     if not os.path.exists(train_dir):
         os.makedirs(train_dir)
     if not os.path.exists(test_dir):
