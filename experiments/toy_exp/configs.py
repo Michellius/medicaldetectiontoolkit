@@ -28,7 +28,7 @@ class configs(DefaultConfigs):
         #    Preprocessing      #
         #########################
 
-        self.root_dir = '/mnt/HDD2TB/Documents/data/mdt_toy'
+        self.root_dir = 'mnt/netcache/bodyct/experiments/nodule_object_detectors_t8798/data/mdt_toy/'
 
         #########################
         #         I/O           #
