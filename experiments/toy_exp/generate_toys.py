@@ -99,9 +99,9 @@ if __name__ == '__main__':
 
     cf = cf.configs()
 
-    generate_experiment('donuts_shape_threads', n_train_images=1500, n_test_images=1000, mode='donuts_shape')
-    generate_experiment('donuts_pattern', n_train_images=1500, n_test_images=1000, mode='donuts_pattern')
-    generate_experiment('circles_scale', n_train_images=1500, n_test_images=1000, mode='circles_scale', class_diameters=(19, 20))
+    generate_experiment('donuts_shape_threads', n_train_images=150, n_test_images=100, mode='donuts_shape')
+    generate_experiment('donuts_pattern', n_train_images=150, n_test_images=100, mode='donuts_pattern')
+    generate_experiment('circles_scale', n_train_images=150, n_test_images=100, mode='circles_scale', class_diameters=(19, 20))
 
 
 
