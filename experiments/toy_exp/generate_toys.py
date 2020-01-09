@@ -61,26 +61,27 @@ def generate_experiment(exp_name, n_train_images, n_test_images, mode, class_dia
 
     train_dir = os.path.join(cf.root_dir, exp_name, 'train')
     test_dir = os.path.join(cf.root_dir, exp_name, 'test')
-    if not os.path.exists(train_dir):
-        os.makedirs(train_dir)
-    if not os.path.exists(test_dir):
-        os.makedirs(test_dir)
-
-    # enforced distance between object center and image edge.
-    foreground_margin = np.max(class_diameters) // 2
-
-    info = []
-    info += [[train_dir, six, foreground_margin, class_diameters, mode] for six in range(n_train_images)]
-    info += [[test_dir, six, foreground_margin, class_diameters, mode] for six in range(n_test_images)]
-
-    print('starting creating {} images'.format(len(info)))
-    pool = Pool(processes=12)
-    pool.map(multi_processing_create_image, info, chunksize=1)
-    pool.close()
-    pool.join()
-
-    aggregate_meta_info(train_dir)
-    aggregate_meta_info(test_dir)
+    print(train_dir)
+    # if not os.path.exists(train_dir):
+    #     os.makedirs(train_dir)
+    # if not os.path.exists(test_dir):
+    #     os.makedirs(test_dir)
+    #
+    # # enforced distance between object center and image edge.
+    # foreground_margin = np.max(class_diameters) // 2
+    #
+    # info = []
+    # info += [[train_dir, six, foreground_margin, class_diameters, mode] for six in range(n_train_images)]
+    # info += [[test_dir, six, foreground_margin, class_diameters, mode] for six in range(n_test_images)]
+    #
+    # print('starting creating {} images'.format(len(info)))
+    # pool = Pool(processes=12)
+    # pool.map(multi_processing_create_image, info, chunksize=1)
+    # pool.close()
+    # pool.join()
+    #
+    # aggregate_meta_info(train_dir)
+    # aggregate_meta_info(test_dir)
 
 
 def aggregate_meta_info(exp_dir):
