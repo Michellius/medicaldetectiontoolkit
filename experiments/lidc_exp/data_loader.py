@@ -40,7 +40,6 @@ from batchgenerators.transforms.crop_and_pad_transforms import CenterCropTransfo
 from batchgenerators.transforms.utility_transforms import ConvertSegToBoundingBoxCoordinates
 
 
-
 def get_train_generators(cf, logger):
     """
     wrapper function for creating the training batch generator pipeline. returns the train/val generators.
@@ -109,7 +108,6 @@ def get_test_generator(cf, logger):
     return batch_gen
 
 
-
 def load_dataset(cf, logger, subset_ixs=None, pp_data_path=None, pp_name=None):
     """
     loads the dataset. if deployed in cloud also copies and unpacks the data to the working directory.
@@ -167,7 +165,6 @@ def load_dataset(cf, logger, subset_ixs=None, pp_data_path=None, pp_name=None):
         data[pid]['fg_slices'] = p_df['fg_slices'].tolist()[ix]
 
     return data
-
 
 
 def create_data_gen_pipeline(patient_data, cf, is_training=True):
@@ -314,7 +311,6 @@ class BatchGenerator(SlimDataLoaderBase):
         return {'data': data, 'seg': seg, 'pid': batch_pids, 'class_target': class_target}
 
 
-
 class PatientBatchIterator(SlimDataLoaderBase):
     """
     creates a test generator that iterates over entire given dataset returning 1 patient per batch.
@@ -331,7 +327,6 @@ class PatientBatchIterator(SlimDataLoaderBase):
         self.patch_size = cf.patch_size
         if len(self.patch_size) == 2:
             self.patch_size = self.patch_size + [1]
-
 
     def generate_train_batch(self):
 
@@ -440,7 +435,6 @@ class PatientBatchIterator(SlimDataLoaderBase):
             self.patient_ix = 0
 
         return out_batch
-
 
 
 def copy_and_unpack_data(logger, pids, fold_dir, source_dir, target_dir):
