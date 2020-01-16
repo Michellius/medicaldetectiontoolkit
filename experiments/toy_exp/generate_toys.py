@@ -21,8 +21,8 @@ import pickle
 from multiprocessing import Pool
 import configs as cf
 
-def multi_processing_create_image(inputs):
 
+def multi_processing_create_image(inputs):
 
     out_dir, six, foreground_margin, class_diameters, mode = inputs
     print('proceesing {} {}'.format(out_dir, six))

@@ -20,6 +20,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import numpy as np
 from default_configs import DefaultConfigs
 
+
 class configs(DefaultConfigs):
 
     def __init__(self, server_env=None):
@@ -50,7 +51,7 @@ class configs(DefaultConfigs):
 
         # choose one of the 3 toy experiments described in https://arxiv.org/pdf/1811.08661.pdf
         # one of ['donuts_shape', 'donuts_pattern', 'circles_scale'].
-        toy_mode = 'donuts_shape'
+        toy_mode = 'donuts_shape_threads'
 
 
         # path to preprocessed data.
@@ -195,7 +196,6 @@ class configs(DefaultConfigs):
          'retina_unet': self.add_mrcnn_configs,
          'prob_detector': self.add_mrcnn_configs,
         }[self.model]()
-
 
     def add_det_unet_configs(self):
 

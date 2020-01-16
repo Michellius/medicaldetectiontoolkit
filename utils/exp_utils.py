@@ -27,7 +27,6 @@ import pandas as pd
 import pickle
 
 
-
 def get_logger(exp_dir):
     """
     creates logger instance. writing out info to file and to terminal.
@@ -44,7 +43,6 @@ def get_logger(exp_dir):
     logger.addHandler(ColorHandler())
     logger.propagate = False
     return logger
-
 
 
 def prep_exp(dataset_path, exp_path, server_env, use_stored_settings=True, is_training=True):
@@ -117,7 +115,6 @@ def prep_exp(dataset_path, exp_path, server_env, use_stored_settings=True, is_tr
     return cf
 
 
-
 def import_module(name, path):
     """
     correct way of importing a module dynamically in python 3.
@@ -129,7 +126,6 @@ def import_module(name, path):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
-
 
 
 class ModelSelector:
@@ -192,7 +188,6 @@ class ModelSelector:
             pickle.dump(monitor_metrics, handle)
 
 
-
 def load_checkpoint(checkpoint_path, net, optimizer):
 
     checkpoint_params = torch.load(os.path.join(checkpoint_path, 'params.pth'))
@@ -202,7 +197,6 @@ def load_checkpoint(checkpoint_path, net, optimizer):
         monitor_metrics = pickle.load(handle)
     starting_epoch = checkpoint_params['epoch'] + 1
     return starting_epoch, monitor_metrics
-
 
 
 def prepare_monitoring(cf):
@@ -232,7 +226,6 @@ def prepare_monitoring(cf):
     TrainingPlot = plotting.TrainingPlot_2Panel(cf)
 
     return metrics, TrainingPlot
-
 
 
 def create_csv_output(results_list, cf, logger):
@@ -275,7 +268,6 @@ def create_csv_output(results_list, cf, logger):
     except:
         fold = 'hold_out'
     predictions_df.to_csv(os.path.join(cf.exp_dir, 'results_{}.csv'.format(fold)), index=False)
-
 
 
 class _AnsiColorizer(object):
@@ -327,9 +319,7 @@ class _AnsiColorizer(object):
         self.stream.write('\x1b[%sm%s\x1b[0m' % (color, text))
 
 
-
 class ColorHandler(logging.StreamHandler):
-
 
     def __init__(self, stream=sys.stdout):
         super(ColorHandler, self).__init__(_AnsiColorizer(stream))

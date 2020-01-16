@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
+# Configuration file for NLST experiment adapted from the LIDC experiment
+# ==============================================================================
 
 import sys
 import os
