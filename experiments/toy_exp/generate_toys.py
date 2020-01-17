@@ -25,7 +25,7 @@ import configs as cf
 def multi_processing_create_image(inputs):
 
     out_dir, six, foreground_margin, class_diameters, mode = inputs
-    print('proceesing {} {}'.format(out_dir, six))
+    print('processing {} {}'.format(out_dir, six))
 
     img = np.random.rand(320, 320)
     seg = np.zeros((320, 320)).astype('uint8')

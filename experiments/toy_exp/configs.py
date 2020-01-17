@@ -35,7 +35,6 @@ class configs(DefaultConfigs):
         #         I/O           #
         #########################
 
-
         # one out of [2, 3]. dimension the model operates in.
         self.dim = 2
 
@@ -52,7 +51,6 @@ class configs(DefaultConfigs):
         # choose one of the 3 toy experiments described in https://arxiv.org/pdf/1811.08661.pdf
         # one of ['donuts_shape', 'donuts_pattern', 'circles_scale'].
         toy_mode = 'donuts_shape_threads'
-
 
         # path to preprocessed data.
         self.input_df_name = 'info_df.pickle'

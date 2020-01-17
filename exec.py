@@ -187,7 +187,7 @@ if __name__ == '__main__':
         cf = utils.prep_exp(args.exp_source, args.exp_dir, args.server_env, is_training=False, use_stored_settings=True)
         if args.dev:
             folds = [0,1]
-            cf.test_n_epochs =  1; cf.max_test_patients = 1
+            cf.test_n_epochs = 1; cf.max_test_patients = 1
 
         cf.slurm_job_id = args.slurm_job_id
         model = utils.import_module('model', cf.model_path)
