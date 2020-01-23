@@ -34,7 +34,6 @@ import configs
 cf = configs.configs()
 
 
-
 def resample_array(src_imgs, src_spacing, target_spacing):
 
     src_spacing = np.round(src_spacing, 3)
@@ -111,7 +110,6 @@ def pp_patient(inputs):
     with open(os.path.join(cf.pp_dir, 'meta_info_{}.pickle'.format(pid)), 'wb') as handle:
         meta_info_dict = {'pid': pid, 'class_target': mal_labels, 'spacing': img.GetSpacing(), 'fg_slices': fg_slices}
         pickle.dump(meta_info_dict, handle)
-
 
 
 def aggregate_meta_info(exp_dir):

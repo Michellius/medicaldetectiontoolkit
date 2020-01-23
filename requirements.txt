@@ -25,3 +25,4 @@ threadpoolctl==1.1.0
 torch==0.4.1
 traceback2==1.4.0
 unittest2==1.1.0
+SimpleItk==1.2.4

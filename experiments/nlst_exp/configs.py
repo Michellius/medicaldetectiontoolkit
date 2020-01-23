@@ -22,6 +22,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import numpy as np
 from default_configs import DefaultConfigs
 
+
 class configs(DefaultConfigs):
 
     def __init__(self, server_env=None):
@@ -30,7 +31,7 @@ class configs(DefaultConfigs):
         #    Preprocessing      #
         #########################
 
-        self.root_dir = '/path/to/raw/data'
+        self.root_dir = '/mnt/netcache/bodyct/experiments/nodule_object_detectors_t8798/data/nlst_exp'
         self.raw_data_dir = '{}/data_nrrd'.format(self.root_dir)
         self.pp_dir = '{}/pp_norm'.format(self.root_dir)
         self.target_spacing = (0.7, 0.7, 1.25)
@@ -51,9 +52,9 @@ class configs(DefaultConfigs):
         self.select_prototype_subset = None
 
         # path to preprocessed data.
-        self.pp_name = 'lidc_preprocessed_for_G2'
+        self.pp_name = 'nlst_preprocessed'
         self.input_df_name = 'info_df.pickle'
-        self.pp_data_path = '/mnt/HDD2TB/Documents/data/lidc/{}'.format(self.pp_name)
+        self.pp_data_path = '/mnt/netcache/bodyct/experiments/nodule_object_detectors_t8798/data/nlst_exp/{}'.format(self.pp_name)
         self.pp_test_data_path = self.pp_data_path #change if test_data in separate folder.
 
         # settings for deployment in cloud.
