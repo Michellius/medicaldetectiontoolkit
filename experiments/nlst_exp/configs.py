@@ -32,7 +32,7 @@ class configs(DefaultConfigs):
         #########################
 
         self.root_dir = '/mnt/netcache/bodyct/experiments/nodule_object_detectors_t8798/data/nlst_exp'
-        self.raw_data_dir = '{}/data_nrrd'.format(self.root_dir)
+        self.raw_data_dir = '{}/training_data'.format(self.root_dir)
         self.pp_dir = '{}/pp_norm'.format(self.root_dir)
         self.target_spacing = (0.7, 0.7, 1.25)
 
