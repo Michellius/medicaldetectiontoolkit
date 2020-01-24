@@ -1,6 +1,6 @@
 """
-Preprocessing script for NLST experiment. After applying preprocessing, images are saved as numpy arrays and the meta information for the corresponding patient is stored
-as a line in the dataframe saved as info_df.pickle.
+Preprocessing script for NLST experiment. After applying preprocessing, images are saved as numpy arrays and the meta
+information for the corresponding patient is stored as a line in the dataframe saved as info_df.pickle.
 """
 import os
 import SimpleITK as sitk
@@ -78,7 +78,11 @@ def pp_patient(inputs):
         a, b, c = np_roi.shape
 
         # put the lesion segmentation in the right place
-        final_rois[z:z+a, y:y+b, x:x+b] = np_roi * int(lesion_id)
+        try:
+            final_rois[z:z+a, y:y+b, x:x+c] = np_roi * int(lesion_id)
+        except ValueError:
+            print('Roi went out of the image. PID: {}, LesionID: {}'.format(pid, lesion_id))
+            print('Image origin: {}, Roi origin {}, spacing: {}'.format(np_origin, np_roi_origin, np_spacing))
 
     # save img and final rois
     np.save(os.path.join(cf.pp_dir, '{}_rois.npy'.format(pid)), final_rois)
