@@ -57,6 +57,7 @@ def pp_patient(inputs):
     np_spacing = np.array(list(reversed(img.GetSpacing())))
 
     print('Processing {}'.format(pid), np_spacing, np_image.shape)
+    print('Image direction: {}'.format(img.GetDirection()))
     # np_image = resample_array(np_image, img.GetSpacing(), cf.target_spacing)
     np_image = intensity_normalization(np_image)
 
@@ -68,6 +69,7 @@ def pp_patient(inputs):
     for lp in lesion_paths:
         lesion_id = lp[-7]
         roi = sitk.ReadImage(lp)
+        print('Roi direction: {}'.format(roi.GetDirection()))
         np_roi = sitk.GetArrayFromImage(roi).astype(np.uint8)
         np_roi_origin = np.array(list(reversed(roi.GetOrigin())))
         np_roi_spacing = np.array(list(reversed(roi.GetSpacing())))
@@ -79,7 +81,11 @@ def pp_patient(inputs):
 
         # put the lesion segmentation in the right place
         try:
-            final_rois[z:z+a, y:y+b, x:x+c] = np_roi * int(lesion_id)
+            if img.GetDirection() == roi.GetDirection():
+                final_rois[z:z+a, y:y+b, x:x+c] = np_roi * int(lesion_id)
+            else:
+                final_rois[z:z + a, y:y + b, x:x + c] = np.flipud(np_roi) * int(lesion_id)
+
         except ValueError:
             print('Roi went out of the image. PID: {}, LesionID: {}'.format(pid, lesion_id))
             print('Image origin: {}, Roi origin {}, spacing: {}'.format(np_origin, np_roi_origin, np_spacing))
