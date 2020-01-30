@@ -84,7 +84,7 @@ def pp_patient(inputs):
             if img.GetDirection() == roi.GetDirection():
                 final_rois[z:z+a, y:y+b, x:x+c] = np_roi * int(lesion_id)
             else:
-                final_rois[z:z + a, y:y + b, x:x + c] = np.flipud(np_roi) * int(lesion_id)
+                final_rois[z-a:z, y:y+b, x:x+c] = np.flipud(np_roi) * int(lesion_id)
 
         except ValueError:
             print('Roi went out of the image. PID: {}, LesionID: {}'.format(pid, lesion_id))
