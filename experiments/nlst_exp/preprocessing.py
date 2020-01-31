@@ -109,11 +109,11 @@ def pp_patient(inputs):
 if __name__ == "__main__":
     cf = configs.configs()
     parser = argparse.ArgumentParser(description='Preprocessing mhd to numpy.')
-    parser.add_argument("--n", help="number of patients to process")
+    parser.add_argument("--n", type="int", help="number of patients to process")
     args = parser.parse_args()
 
     if args.n:
-        paths = [os.path.join(cf.raw_data_dir, ii) for ii in os.listdir(cf.raw_data_dir) if 'mhd' in ii][n]
+        paths = [os.path.join(cf.raw_data_dir, ii) for ii in os.listdir(cf.raw_data_dir) if 'mhd' in ii][:args.n]
     else:
         paths = [os.path.join(cf.raw_data_dir, ii) for ii in os.listdir(cf.raw_data_dir) if 'mhd' in ii]
 
