@@ -12,6 +12,7 @@ from skimage.transform import resize
 import subprocess
 import pickle
 import configs
+import argparse
 
 
 def resample_array(src_imgs, src_spacing, target_spacing):
@@ -56,7 +57,7 @@ def pp_patient(inputs):
     np_origin = np.array(list(reversed(img.GetOrigin())))
     np_spacing = np.array(list(reversed(img.GetSpacing())))
 
-    print('Processing {}'.format(pid))
+    print('Processing number {} with pid: {}'.format(ix, pid))
     # print('Image direction: {}'.format(img.GetDirection()))
     # np_image = resample_array(np_image, img.GetSpacing(), cf.target_spacing)
     np_image = intensity_normalization(np_image)
@@ -107,7 +108,14 @@ def pp_patient(inputs):
 
 if __name__ == "__main__":
     cf = configs.configs()
-    paths = [os.path.join(cf.raw_data_dir, ii) for ii in os.listdir(cf.raw_data_dir) if 'mhd' in ii]
+    parser = argparse.ArgumentParser(description='Preprocessing mhd to numpy.')
+    parser.add_argument("--n", help="number of patients to process")
+    args = parser.parse_args()
+
+    if args.n:
+        paths = [os.path.join(cf.raw_data_dir, ii) for ii in os.listdir(cf.raw_data_dir) if 'mhd' in ii][n]
+    else:
+        paths = [os.path.join(cf.raw_data_dir, ii) for ii in os.listdir(cf.raw_data_dir) if 'mhd' in ii]
 
     if not os.path.exists(cf.pp_dir):
         os.mkdir(cf.pp_dir)
