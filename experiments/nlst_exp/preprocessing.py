@@ -20,7 +20,8 @@ def resample_array(src_imgs, src_spacing, target_spacing):
     Resampling taken from lidc experiment MDT.
     """
     src_spacing = np.round(src_spacing, 3)
-    target_shape = [int(src_imgs.shape[ix] * src_spacing[::-1][ix] / target_spacing[::-1][ix]) for ix in range(len(src_imgs.shape))]
+    target_shape = [int(src_imgs.shape[ix] * src_spacing[::-1][ix] / target_spacing[::-1][ix]) for ix in
+                    range(len(src_imgs.shape))]
     for i in range(len(target_shape)):
         try:
             assert target_shape[i] > 0
@@ -83,12 +84,12 @@ def pp_patient(inputs):
         # put the lesion segmentation in the right place
         try:
             if img.GetDirection() == roi.GetDirection():
-                final_rois[z:z+a, y:y+b, x:x+c] = np_roi * int(lesion_id)
+                final_rois[z:z + a, y:y + b, x:x + c] = np_roi * int(lesion_id)
             else:
                 if z < a:
-                    final_rois[:z, y:y+b, x:x+c] = np.flipud(np_roi)[-z:, :, :]
+                    final_rois[:z, y:y + b, x:x + c] = np.flipud(np_roi)[-z:, :, :]
                 else:
-                    final_rois[z-a:z, y:y+b, x:x+c] = np.flipud(np_roi) * int(lesion_id)
+                    final_rois[z - a:z, y:y + b, x:x + c] = np.flipud(np_roi)
         except ValueError:
             print('Roi went out of the image. PID: {}, LesionID: {}'.format(pid, lesion_id))
             print('Image origin: {}, Roi origin {}, spacing: {}'.format(np_origin, np_roi_origin, np_spacing))
@@ -104,6 +105,17 @@ def pp_patient(inputs):
     with open(os.path.join(cf.pp_dir, 'meta_info_{}.pickle'.format(pid)), 'wb') as handle:
         meta_info_dict = {'pid': pid, 'class_target': mal_labels, 'spacing': img.GetSpacing(), 'fg_slices': fg_slices}
         pickle.dump(meta_info_dict, handle)
+
+
+def aggregate_meta_info(exp_dir):
+    files = [os.path.join(exp_dir, f) for f in os.listdir(exp_dir) if 'meta_info' in f]
+    df = pd.DataFrame(columns=['pid', 'class_target', 'spacing', 'fg_slices'])
+    for f in files:
+        with open(f, 'rb') as handle:
+            df.loc[len(df)] = pickle.load(handle)
+
+    df.to_pickle(os.path.join(exp_dir, 'info_df.pickle'))
+    print("aggregated meta info to df with length", len(df))
 
 
 if __name__ == "__main__":
@@ -122,3 +134,8 @@ if __name__ == "__main__":
 
     for i in enumerate(paths):
         pp_patient(i)
+
+    aggregate_meta_info(cf.pp_dir)
+    subprocess.call('cp {} {}'.format(os.path.join(cf.pp_dir, 'info_df.pickle'), os.path.join(cf.pp_dir,
+                                                                                              'info_df_bk.pickle')),
+                    shell=True)

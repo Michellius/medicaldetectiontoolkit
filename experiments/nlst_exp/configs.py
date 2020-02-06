@@ -52,7 +52,7 @@ class configs(DefaultConfigs):
         self.select_prototype_subset = None
 
         # path to preprocessed data.
-        self.pp_name = 'nlst_preprocessed'
+        self.pp_name = 'pp_norm_100'
         self.input_df_name = 'info_df.pickle'
         self.pp_data_path = '/mnt/netcache/bodyct/experiments/nodule_object_detectors_t8798/data/nlst_exp/{}'.format(self.pp_name)
         self.pp_test_data_path = self.pp_data_path #change if test_data in separate folder.
