@@ -121,7 +121,7 @@ def aggregate_meta_info(exp_dir):
 if __name__ == "__main__":
     cf = configs.configs()
     parser = argparse.ArgumentParser(description='Preprocessing mhd to numpy.')
-    parser.add_argument("--n", type="int", help="number of patients to process")
+    parser.add_argument("--n", type=int, help="number of patients to process")
     args = parser.parse_args()
 
     if args.n:
