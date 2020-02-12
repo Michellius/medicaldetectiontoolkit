@@ -84,7 +84,7 @@ def pp_patient(inputs):
         # put the lesion segmentation in the right place
         try:
             if img.GetDirection() == roi.GetDirection():
-                final_rois[z:z + a, y:y + b, x:x + c] = np_roi * int(lesion_id)
+                final_rois[z:z + a, y:y + b, x:x + c] = np_roi
             else:
                 if z < a:
                     final_rois[:z, y:y + b, x:x + c] = np.flipud(np_roi)[-z:, :, :]
@@ -100,7 +100,8 @@ def pp_patient(inputs):
 
     # stuff for meta info, malignancy all set to 1?
     fg_slices = [ii for ii in np.unique(np.argwhere(final_rois != 0)[:, 0])]
-    mal_labels = np.ones(len(lesion_paths))
+    mal_labels = np.ones(1)
+    assert len(mal_labels) + 1 == len(np.unique(final_rois)), [len(mal_labels), np.unique(final_rois), pid]
 
     with open(os.path.join(cf.pp_dir, 'meta_info_{}.pickle'.format(pid)), 'wb') as handle:
         meta_info_dict = {'pid': pid, 'class_target': mal_labels, 'spacing': img.GetSpacing(), 'fg_slices': fg_slices}
@@ -132,8 +133,13 @@ if __name__ == "__main__":
     if not os.path.exists(cf.pp_dir):
         os.mkdir(cf.pp_dir)
 
-    for i in enumerate(paths):
-        pp_patient(i)
+    # for i in enumerate(paths):
+    #     pp_patient(i)
+
+    pool = Pool(processes=10)
+    pool.map(pp_patient, enumerate(paths), chunksize=1)
+    pool.close()
+    pool.join()
 
     aggregate_meta_info(cf.pp_dir)
     subprocess.call('cp {} {}'.format(os.path.join(cf.pp_dir, 'info_df.pickle'), os.path.join(cf.pp_dir,
