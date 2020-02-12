@@ -84,12 +84,12 @@ def pp_patient(inputs):
         # put the lesion segmentation in the right place
         try:
             if img.GetDirection() == roi.GetDirection():
-                final_rois[z:z + a, y:y + b, x:x + c] = np_roi
+                final_rois[z:z + a, y:y + b, x:x + c] = np_roi * int(lesion_id)
             else:
                 if z < a:
-                    final_rois[:z, y:y + b, x:x + c] = np.flipud(np_roi)[-z:, :, :]
+                    final_rois[:z, y:y + b, x:x + c] = np.flipud(np_roi)[-z:, :, :] * int(lesion_id)
                 else:
-                    final_rois[z - a:z, y:y + b, x:x + c] = np.flipud(np_roi)
+                    final_rois[z - a:z, y:y + b, x:x + c] = np.flipud(np_roi) * int(lesion_id)
         except ValueError:
             print('Roi went out of the image. PID: {}, LesionID: {}'.format(pid, lesion_id))
             print('Image origin: {}, Roi origin {}, spacing: {}'.format(np_origin, np_roi_origin, np_spacing))
@@ -100,7 +100,7 @@ def pp_patient(inputs):
 
     # stuff for meta info, malignancy all set to 1?
     fg_slices = [ii for ii in np.unique(np.argwhere(final_rois != 0)[:, 0])]
-    mal_labels = np.ones(1)
+    mal_labels = np.ones(len(lesion_paths))
     assert len(mal_labels) + 1 == len(np.unique(final_rois)), [len(mal_labels), np.unique(final_rois), pid]
 
     with open(os.path.join(cf.pp_dir, 'meta_info_{}.pickle'.format(pid)), 'wb') as handle:
