@@ -33,7 +33,7 @@ class configs(DefaultConfigs):
 
         self.root_dir = '/mnt/netcache/bodyct/experiments/nodule_object_detectors_t8798/data/nlst_exp'
         self.raw_data_dir = '{}/training_data'.format(self.root_dir)
-        self.pp_dir = '{}/pp_norm'.format(self.root_dir)
+        self.pp_dir = '{}/pp_norm_10'.format(self.root_dir)
         self.target_spacing = (0.7, 0.7, 1.25)
 
         #########################
@@ -52,7 +52,7 @@ class configs(DefaultConfigs):
         self.select_prototype_subset = None
 
         # path to preprocessed data.
-        self.pp_name = 'pp_norm_100'
+        self.pp_name = 'pp_norm_10'
         self.input_df_name = 'info_df.pickle'
         self.pp_data_path = '/mnt/netcache/bodyct/experiments/nodule_object_detectors_t8798/data/nlst_exp/{}'.format(self.pp_name)
         self.pp_test_data_path = self.pp_data_path #change if test_data in separate folder.
@@ -113,8 +113,8 @@ class configs(DefaultConfigs):
         #########################
 
         self.num_epochs = 100
-        self.num_train_batches = 200 if self.dim == 2 else 200
-        self.batch_size = 20 if self.dim == 2 else 8
+        self.num_train_batches = 200 if self.dim == 2 else 50
+        self.batch_size = 20 if self.dim == 2 else 1
 
         self.do_validation = True
         # decide whether to validate on entire patient volumes (like testing) or sampled patches (like training)
