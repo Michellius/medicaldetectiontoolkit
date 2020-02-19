@@ -69,8 +69,8 @@ def pp_patient(inputs):
     seg_path = os.path.join(cf.root_dir, 'training_data_segmentations')
     lesion_paths = ([os.path.join(seg_path, ii) for ii in os.listdir(seg_path) if pid in ii and 'mhd' in ii])
 
+    rix = 1
     for lp in lesion_paths:
-        lesion_id = lp[-7]
         roi = sitk.ReadImage(lp)
         # print('Roi direction: {}'.format(roi.GetDirection()))
         np_roi = sitk.GetArrayFromImage(roi).astype(np.uint8)
@@ -85,19 +85,20 @@ def pp_patient(inputs):
         # put the lesion segmentation in the right place
         try:
             if img.GetDirection() == roi.GetDirection():
-                final_rois[z:z + a, y:y + b, x:x + c] += np_roi * int(lesion_id)
+                final_rois[z:z + a, y:y + b, x:x + c] += np_roi * rix
             else:
                 if z < a:
-                    final_rois[:z, y:y + b, x:x + c] += np.flipud(np_roi)[-z:, :, :] * int(lesion_id)
+                    final_rois[:z, y:y + b, x:x + c] += np.flipud(np_roi)[-z:, :, :] * rix
                 else:
-                    final_rois[z - a:z, y:y + b, x:x + c] += np.flipud(np_roi) * int(lesion_id)
+                    final_rois[z - a:z, y:y + b, x:x + c] += np.flipud(np_roi) * rix
+            rix += 1
         except ValueError:
             print('Roi went out of the image. PID: {}, LesionID: {}'.format(pid, lesion_id))
             print('Image origin: {}, Roi origin {}, spacing: {}'.format(np_origin, np_roi_origin, np_spacing))
 
-    # stuff for meta info, malignancy all set to 1?
+    # stuff for meta info, set malignancy to 4, this is binarized later on to malignent (all are malignent)
     fg_slices = [ii for ii in np.unique(np.argwhere(final_rois != 0)[:, 0])]
-    mal_labels = np.ones(len(lesion_paths))
+    mal_labels = np.ones(len(lesion_paths)) * 4.0
     assert len(mal_labels) + 1 == len(np.unique(final_rois)), [len(mal_labels), np.unique(final_rois), pid]
 
     # save img and final rois
