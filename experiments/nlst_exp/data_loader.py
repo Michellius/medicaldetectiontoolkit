@@ -159,7 +159,7 @@ def load_dataset(cf, logger, subset_ixs=None, pp_data_path=None, pp_name=None):
 
     data = OrderedDict()
     for ix, pid in enumerate(pids):
-        data[pid] = {'data': imgs[ix], 'seg': segs[ix], 'pid': pid, 'class_target': class_targets[ix]}
+        data[pid] = {'data': imgs[ix], 'seg': segs[ix], 'pid': pid, 'class_target': [class_targets[ix]]}
         data[pid]['fg_slices'] = p_df['fg_slices'].tolist()[ix]
 
     return data
