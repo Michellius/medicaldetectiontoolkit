@@ -159,9 +159,7 @@ def load_dataset(cf, logger, subset_ixs=None, pp_data_path=None, pp_name=None):
 
     data = OrderedDict()
     for ix, pid in enumerate(pids):
-        # for the experiment conducted here, malignancy scores are binarized: (benign: 1-2, malignant: 3-5)
-        targets = [1 if ii >= 3 else 0 for ii in class_targets[ix]]
-        data[pid] = {'data': imgs[ix], 'seg': segs[ix], 'pid': pid, 'class_target': targets}
+        data[pid] = {'data': imgs[ix], 'seg': segs[ix], 'pid': pid, 'class_target': class_targets[ix]}
         data[pid]['fg_slices'] = p_df['fg_slices'].tolist()[ix]
 
     return data
