@@ -194,7 +194,7 @@ def create_data_gen_pipeline(patient_data, cf, is_training=True):
     else:
         my_transforms.append(CenterCropTransform(crop_size=cf.patch_size[:cf.dim]))
 
-    my_transforms.append(ConvertSegToBoundingBoxCoordinates(cf.dim, get_rois_from_seg_flag=False, class_specific_seg_flag=cf.class_specific_seg_flag))
+    my_transforms.append(ConvertSegToBoundingBoxCoordinates(cf.dim, get_rois_from_seg_flag=True, class_specific_seg_flag=cf.class_specific_seg_flag))
     all_transforms = Compose(my_transforms)
     # multithreaded_generator = SingleThreadedAugmenter(data_gen, all_transforms)
     multithreaded_generator = MultiThreadedAugmenter(data_gen, all_transforms, num_processes=cf.n_workers, seeds=range(cf.n_workers))
@@ -348,7 +348,7 @@ class PatientBatchIterator(SlimDataLoaderBase):
             out_targets = batch_class_targets
 
             batch_3D = {'data': out_data, 'seg': out_seg, 'class_target': out_targets, 'pid': pid}
-            converter = ConvertSegToBoundingBoxCoordinates(dim=3, get_rois_from_seg_flag=False, class_specific_seg_flag=self.cf.class_specific_seg_flag)
+            converter = ConvertSegToBoundingBoxCoordinates(dim=3, get_rois_from_seg_flag=True, class_specific_seg_flag=self.cf.class_specific_seg_flag)
             batch_3D = converter(**batch_3D)
             batch_3D.update({'patient_bb_target': batch_3D['bb_target'],
                                   'patient_roi_labels': batch_3D['roi_labels'],
@@ -369,7 +369,7 @@ class PatientBatchIterator(SlimDataLoaderBase):
                      slice_range])
 
             batch_2D = {'data': out_data, 'seg': out_seg, 'class_target': out_targets, 'pid': pid}
-            converter = ConvertSegToBoundingBoxCoordinates(dim=2, get_rois_from_seg_flag=False, class_specific_seg_flag=self.cf.class_specific_seg_flag)
+            converter = ConvertSegToBoundingBoxCoordinates(dim=2, get_rois_from_seg_flag=True, class_specific_seg_flag=self.cf.class_specific_seg_flag)
             batch_2D = converter(**batch_2D)
 
             if self.cf.merge_2D_to_3D_preds:
@@ -424,7 +424,7 @@ class PatientBatchIterator(SlimDataLoaderBase):
             patch_batch['patient_roi_labels'] = patient_batch['patient_roi_labels']
             patch_batch['original_img_shape'] = patient_batch['original_img_shape']
 
-            converter = ConvertSegToBoundingBoxCoordinates(self.cf.dim, get_rois_from_seg_flag=False, class_specific_seg_flag=self.cf.class_specific_seg_flag)
+            converter = ConvertSegToBoundingBoxCoordinates(self.cf.dim, get_rois_from_seg_flag=True, class_specific_seg_flag=self.cf.class_specific_seg_flag)
             patch_batch = converter(**patch_batch)
             out_batch = patch_batch
 
