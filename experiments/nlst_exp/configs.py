@@ -114,7 +114,7 @@ class configs(DefaultConfigs):
 
         self.num_epochs = 100
         self.num_train_batches = 200 if self.dim == 2 else 50
-        self.batch_size = 20 if self.dim == 2 else 1
+        self.batch_size = 20 if self.dim == 2 else 2
 
         self.do_validation = True
         # decide whether to validate on entire patient volumes (like testing) or sampled patches (like training)
